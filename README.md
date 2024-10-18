@@ -34,9 +34,8 @@ print(saved_to)
 </summary>
 
 ```
-usage: fdown [-h] [-d DIR] [-o OUTPUT] [-q normal|hd] [-t TIMEOUT]
-             [-c chunk-size] [-p PROTOCOL ADDRESS PROTOCOL ADDRESS] [--resume]
-             [--quiet] [--version]
+usage: fdown [-h] [-d PATH] [-o PATH] [-q normal|hd] [-t TIMEOUT]
+             [-c chunk-size] [--resume] [--quiet] [--version]
              url
 
 Download Facebook videos seamlessly.
@@ -46,17 +45,15 @@ positional arguments:
 
 options:
   -h, --help            show this help message and exit
-  -d, --dir DIR         Directory for saving the video to -
-                        /home/smartwa/
-  -o, --output OUTPUT   Filename under which to save the video to - random
+  -d, --dir PATH        Directory for saving the video to -
+                        /home/smartwa/git/smartwa/fdown-api
+  -o, --output PATH     Filename under which to save the video to - random
   -q, --quality normal|hd
                         Video download quality - hd
   -t, --timeout TIMEOUT
                         Http request timeout in seconds - 20
   -c, --chunk-size chunk-size
                         Chunk-size for downloading files in KB - 512
-  -p, --proxy PROTOCOL ADDRESS PROTOCOL ADDRESS
-                        Http request proxy - None
   --resume              Resume an incomplete download - False
   --quiet               Do not stdout any informational messages - False
   --version             show program's version number and exit

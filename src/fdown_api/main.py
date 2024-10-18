@@ -19,6 +19,12 @@ except ImportError:
 
 logger = logging.getLogger(__name__)
 
+duration_patterns: dict[str, str] = {
+    "hour": r"(\d{1,2})\w(\d{1,2})\w(\d{1,2}).+",
+    "minute_seconds": r"(\d{1,2}).+(\d{1,2}).+",
+    "seconds": r"(\d{1,2}).+",
+}
+
 
 @dataclass
 class VideoLinks:
@@ -34,16 +40,33 @@ class VideoLinks:
     description: t.Optional[str] = None
     duration: t.Optional[str] = None
 
+    @property
+    def duration_in_seconds(self) -> int:
+        """Video's running time in seconds"""
+        resp = 0
+        if self.duration:
+            hour_match = re.findall(duration_patterns["hour"], self.duration)
+            minute_seconds_match = re.findall(
+                duration_patterns["minute_seconds"], self.duration
+            )
+            seconds_match = re.findall(duration_patterns["seconds"], self.duration)
+            if hour_match:
+                hours, minutes, seconds = hour_match[0]
+                resp = (int(hours) * 60 * 60) + (int(minutes) * 60) + int(seconds)
+            elif minute_seconds_match:
+                minutes, seconds = minute_seconds_match[0]
+                resp = (int(minutes) * 60) + int(seconds)
+            elif seconds_match:
+                seconds = seconds_match[0]
+                resp = int(seconds)
+            return resp
+        return resp
+
 
 class Fdown:
     """Download facebook videos"""
 
-    def __init__(
-        self,
-        timeout: int = 20,
-        proxies: dict[str, str] = {},
-        cookies: dict[str, str] = {},
-    ):
+    def __init__(self, timeout: int = 20):
         """Initialize `Fdown`
 
         Args:
@@ -54,25 +77,36 @@ class Fdown:
                 "browser": "firefox",
                 "platform": "linux",
                 "desktop": True,
-            },
+            }
         )
         self.request_timeout = timeout
 
-    def validate_url(self, url: str) -> str:
+    def validate_url(self, url: str, check: bool = False) -> str | bool:
         """Check authenticity of video url
 
         Args:
-            url (str)
+            url (str): Link to the facebook video post.
+            check (optional, bool): Just check whether the url is valid or not. Defaults to False.
 
         Returns:
-            str
+            str|bool : Url or validity flag.
         """
-        url_pattern = r"https://.+\.facebook\.com.+?mibextid=\w{16}"
+        url_pattern = r"https://.+\.facebook\.com/.+"
         match = re.match(url_pattern, url)
+        resp = ""
         if match:
-            return url
+            resp = match.group()
         else:
-            raise ValueError(f"Invalid url passed - '{url}'")
+            url_pattern_1 = r"https://fb\.watch/.+"
+            match_1 = re.match(url_pattern_1, url)
+            if match_1:
+                resp = match_1.group()
+        if check:
+            return bool(resp)
+        else:
+            if not resp:
+                raise ValueError(f"Invalid url passed - '{url}'")
+            return resp
 
     def _extract_video_quality_urls(self, contents: str) -> VideoLinks:
         """Extract links to download the video

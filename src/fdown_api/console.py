@@ -1,5 +1,6 @@
 import argparse
 from os import getcwd
+from fzseries_api import __version__
 
 parser = argparse.ArgumentParser(
     prog="fdown",
@@ -12,9 +13,13 @@ parser.add_argument(
     "--dir",
     help="Directory for saving the video to - %(default)s",
     default=getcwd(),
+    metavar="PATH",
 )
 parser.add_argument(
-    "-o", "--output", help="Filename under which to save the video to - random"
+    "-o",
+    "--output",
+    help="Filename under which to save the video to - random",
+    metavar="PATH",
 )
 parser.add_argument(
     "-q",
@@ -40,13 +45,6 @@ parser.add_argument(
     help="Chunk-size for downloading files in KB - %(default)s",
 )
 parser.add_argument(
-    "-p",
-    "--proxy",
-    nargs=2,
-    help="Http request proxy - %(default)s",
-    metavar="PROTOCOL ADDRESS",
-)
-parser.add_argument(
     "--resume",
     action="store_true",
     help="Resume an incomplete download - %(default)s",
@@ -56,7 +54,7 @@ parser.add_argument(
     action="store_false",
     help="Do not stdout any informational messages - False",
 )
-parser.add_argument("--version", action="version", version="1.0.0")
+parser.add_argument("--version", action="version", version=__version__)
 
 args = parser.parse_args()
 
@@ -64,7 +62,7 @@ args = parser.parse_args()
 def main():
     from fdown_api import Fdown
 
-    f = Fdown(args.timeout, {args.proxy[0]: args.proxy[1]} if args.proxy else {})
+    f = Fdown(args.timeout)
     try:
         saved_to = f.download_video(
             videolinks=f.get_links(args.url),

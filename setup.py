@@ -16,7 +16,7 @@ EXTRA_REQUIRE = {"cli": cli_reqs}
 
 setup(
     name="fdown-api",
-    version="0.0.1",
+    version="0.0.2",
     license="GPLv3",
     author="Smartwa",
     maintainer="Smartwa",
