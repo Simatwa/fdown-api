@@ -80,6 +80,9 @@ class VideoLinks:
 class Fdown:
     """Download facebook videos"""
 
+    video_quality_options: tuple[str] = ("normal", "hd", "best")
+    """Available video download quality options"""
+
     def __init__(self, timeout: int = 20):
         """Initialize `Fdown`
 
@@ -198,11 +201,9 @@ class Fdown:
         Returns:
             str: Path: Path where the downloaded video file has been saved to.
         """
-        assert quality in (
-            "normal",
-            "hd",
-            "best",
-        ), f"Quality must be one of ('normal', 'hd', 'best') not '{quality}'"
+        assert (
+            quality in self.video_quality_options
+        ), f"Quality must be one of {self.video_quality_options} not '{quality}'"
         if not isinstance(videolinks, VideoLinks):
             raise ValueError(
                 f"Videolink should be an instance of {VideoLinks} not {type(videolinks)}"
