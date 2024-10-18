@@ -1,6 +1,6 @@
 import argparse
 from os import getcwd
-from fzseries_api import __version__
+from fdown_api import Fdown, __version__
 
 parser = argparse.ArgumentParser(
     prog="fdown",
@@ -25,9 +25,9 @@ parser.add_argument(
     "-q",
     "--quality",
     help="Video download quality - %(default)s",
-    metavar="[normal|hd|best]",
-    choices=["normal", "hd", "best"],
-    default="best",
+    metavar=f"[{'|'.join(Fdown.video_quality_options)}]",
+    choices=Fdown.video_quality_options,
+    default=Fdown.video_quality_options[-1],
 )
 parser.add_argument(
     "-t",
