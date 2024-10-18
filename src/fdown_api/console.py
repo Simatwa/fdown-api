@@ -25,9 +25,9 @@ parser.add_argument(
     "-q",
     "--quality",
     help="Video download quality - %(default)s",
-    metavar="normal|hd",
-    choices=["normal", "hd"],
-    default="hd",
+    metavar="[normal|hd|best]",
+    choices=["normal", "hd", "best"],
+    default="best",
 )
 parser.add_argument(
     "-t",

@@ -62,6 +62,20 @@ class VideoLinks:
             return resp
         return resp
 
+    @property
+    def best_quality_available_url(self) -> str:
+        """Get url of the best quality of the video available
+        Exceptions:
+           ValueError : Incase there's no url found. Defaults to False.
+
+        Returns:
+            str: url
+        """
+        url = self.hdlink if self.hdlink else self.sdlink
+        if not url:
+            raise ValueError(f"No url found to download the video.")
+        return url
+
 
 class Fdown:
     """Download facebook videos"""
@@ -158,7 +172,7 @@ class Fdown:
     def download_video(
         self,
         videolinks: VideoLinks,
-        quality: t.Literal["normal", "hd"] = "hd",
+        quality: t.Literal["normal", "hd", "best"] = "best",
         filename: str = None,
         dir: str = os.getcwd(),
         progress_bar=True,
@@ -169,7 +183,7 @@ class Fdown:
         """Download and save the video in disk
         Args:
             videolinks (VideoLinks)
-            quality (t.Literal['normal','hd']', optional): Video quality to be downloaded. Defaults to 'hd'.
+            quality (t.Literal['normal','hd']', optional): Video quality to be downloaded. Defaults to "best".
             filename (str): Movie filename. Defaults to  None.
             dir (str, optional): Directory for saving the contents Defaults to current directory.
             progress_bar (bool, optional): Display download progress bar. Defaults to True.
@@ -184,6 +198,11 @@ class Fdown:
         Returns:
             str: Path: Path where the downloaded video file has been saved to.
         """
+        assert quality in (
+            "normal",
+            "hd",
+            "best",
+        ), f"Quality must be one of ('normal', 'hd', 'best') not '{quality}'"
         if not isinstance(videolinks, VideoLinks):
             raise ValueError(
                 f"Videolink should be an instance of {VideoLinks} not {type(videolinks)}"
@@ -195,7 +214,15 @@ class Fdown:
         current_downloaded_size = 0
         current_downloaded_size_in_mb = 0
         save_to = Path(dir) / filename
-        video_file_url = videolinks.hdlink if quality == "hd" else videolinks.sdlink
+        video_file_url = (
+            videolinks.hdlink
+            if quality == "hd"
+            else (
+                videolinks.sdlink
+                if quality == "normal"
+                else videolinks.best_quality_available_url
+            )
+        )
 
         if not video_file_url:
             raise ValueError(
