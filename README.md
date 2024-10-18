@@ -26,6 +26,8 @@ $ pip install fdown-api
 > For CLI to work you have to install fdown-api along with its cli-dependencies:
 > `$ pip install fdown-api[cli]`
 
+Alternatively, you can download standalone executable for your system from [here](https://github.com/Simatwa/fdown-api/releases/latest).
+
 ## Usage
  
 ### Developers
