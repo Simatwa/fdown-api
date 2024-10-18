@@ -14,13 +14,17 @@
 <a href="https://hits.seeyoufarm.com"><img src="https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fgithub.com/Simatwa/fdown-api"/></a>
 </p>
 
-Download facebook videos with ease.
+> Download facebook videos with ease.
 
 ## Installation
 
 ```sh
-$ pip install fdown-api[cli]
+$ pip install fdown-api
 ```
+
+> [!NOTE]
+> For CLI to work you have to install fdown-api along with its cli-dependencies:
+> `$ pip install fdown-api[cli]`
 
 ## Usage
  
