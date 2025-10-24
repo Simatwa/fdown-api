@@ -3,20 +3,20 @@ from setuptools import setup
 from setuptools import find_packages
 
 INSTALL_REQUIRE = [
-    "cloudscraper==1.2.71",
-    "bs4==0.0.1",
+    "cloudscraper>=1.2.71",
+    "bs4>=0.0.1",
 ]
 
 cli_reqs = [
-    "tqdm==4.66.3",
-    "colorama==0.4.6",
+    "tqdm>=4.66.3",
+    "colorama>=0.4.6",
 ]
 
 EXTRA_REQUIRE = {"cli": cli_reqs}
 
 setup(
     name="fdown-api",
-    version="0.0.3",
+    version="0.0.4",
     license="GPLv3",
     author="Smartwa",
     maintainer="Smartwa",

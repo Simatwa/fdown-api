@@ -1,4 +1,4 @@
-cloudscraper==1.2.71
-bs4==0.0.1
-colorama==0.4.6
-tqdm==4.66.3
+cloudscraper>=1.2.71
+bs4>=0.0.1
+colorama>=0.4.6
+tqdm>=4.66.3
